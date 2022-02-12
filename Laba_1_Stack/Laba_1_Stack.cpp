@@ -54,6 +54,12 @@ void PrintInformationStack(StackElement* sp)
     }
 }
 
+/// <summary>
+/// Добавление элементов в стек
+/// </summary>
+/// <param name="value"></param>
+/// <param name="sp"></param>
+/// <returns></returns>
 StackElement* Push(int value, StackElement* sp)
 {
     StackElement* pTemp = new StackElement;
@@ -67,13 +73,32 @@ StackElement* Push(int value, StackElement* sp)
     return sp;
 }
 
+/// <summary>
+/// Добавление определенного колличества случайных элементов
+/// </summary>
+/// <param name="count"></param>
+/// <param name="sp"></param>
+/// <returns></returns>
+StackElement* PushCountRandom(int count, StackElement* sp) 
+{
+    for (int i = 0; i < count; i++) 
+    {
+        int number = rand();
+        sp = Push(number, sp);
+    }
+
+    return sp;
+}
+
 int main()
 {
+    setlocale(LC_ALL, "RUSSIAN");
+    srand(static_cast<unsigned int>(time(0)));
+
     initStack(sp, sp_second);
 
-    sp = Push(5, sp);
-    sp = Push(10, sp);
-    sp = Push(12, sp);
+    sp = PushCountRandom(5, sp);
+
     PrintInformationStack(sp);
 }
 
