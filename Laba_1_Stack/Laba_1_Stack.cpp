@@ -73,6 +73,11 @@ StackElement* Push(int value, StackElement* sp)
     return sp;
 }
 
+/// <summary>
+/// Удаление элемента из главного стека
+/// </summary>
+/// <param name="sp"></param>
+/// <returns></returns>
 int Pop(StackElement* sp) 
 {
     if (!isStackEmpty(sp))
@@ -104,7 +109,7 @@ StackElement* PushCountRandom(int count, StackElement* sp)
 }
 
 /// <summary>
-/// Dключения верхнего элемента главного стека в вспомогательный
+/// Перемещение верхнего элемента главного стека в вспомогательный
 /// </summary>
 /// <param name="sp"></param>
 /// <param name="sp_second"></param>
@@ -114,6 +119,34 @@ void PushToSecond(StackElement* sp, StackElement* sp_second)
     sp = sp->Next;
     current->Next = sp_second;
     sp_second = current;
+}
+
+/// <summary>
+/// Перемещение верхнего элемента вспомогательного стека в главный
+/// </summary>
+/// <param name="sp"></param>
+/// <param name="sp_second"></param>
+void AddFromSecond(StackElement* sp, StackElement* sp_second) 
+{
+    StackElement* current = sp_second;
+    sp_second = sp_second->Next;
+    current->Next = sp;
+    sp = current;
+}
+
+/// <summary>
+/// Проверка введеных данных
+/// </summary>
+/// <returns></returns>
+int inputHandler() {
+    int a;
+    while (!(cin >> a) || (cin.peek() != '\n'))
+    {
+        cin.clear();
+        while (cin.get() != '\n');
+        cout << "Введены данные неверного формата. Попробуйте снова.\n>> ";
+    }
+    return a;
 }
 
 int main()
