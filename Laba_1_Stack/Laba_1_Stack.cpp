@@ -10,7 +10,7 @@ struct StackElement
 {
     int Value; //Информационная составляющая
     StackElement* Next; //Связующая составляющая(указатель на следующий элемент стека)
-} *sp, *sp_second;
+};
 
 /// <summary>
 /// Инициализация стека
@@ -73,6 +73,19 @@ StackElement* Push(int value, StackElement* sp)
     return sp;
 }
 
+int Pop(StackElement* sp) 
+{
+    if (!isStackEmpty(sp))
+    {
+        StackElement* pTemp = sp;
+        sp = sp->Next;
+        delete pTemp;
+        return 1;
+    }
+    else
+        return -1;
+}
+
 /// <summary>
 /// Добавление определенного колличества случайных элементов
 /// </summary>
@@ -90,10 +103,26 @@ StackElement* PushCountRandom(int count, StackElement* sp)
     return sp;
 }
 
+/// <summary>
+/// Dключения верхнего элемента главного стека в вспомогательный
+/// </summary>
+/// <param name="sp"></param>
+/// <param name="sp_second"></param>
+void PushToSecond(StackElement* sp, StackElement* sp_second) 
+{
+    StackElement* current = sp;
+    sp = sp->Next;
+    current->Next = sp_second;
+    sp_second = current;
+}
+
 int main()
 {
     setlocale(LC_ALL, "RUSSIAN");
     srand(static_cast<unsigned int>(time(0)));
+
+    StackElement* sp = NULL;
+    StackElement* sp_second = NULL;
 
     initStack(sp, sp_second);
 
