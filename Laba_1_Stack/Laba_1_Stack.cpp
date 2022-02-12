@@ -78,17 +78,16 @@ StackElement* Push(int value, StackElement* sp)
 /// </summary>
 /// <param name="sp"></param>
 /// <returns></returns>
-int Pop(StackElement* sp) 
+void Pop(StackElement*& sp)
 {
     if (!isStackEmpty(sp))
     {
         StackElement* pTemp = sp;
         sp = sp->Next;
         delete pTemp;
-        return 1;
     }
     else
-        return -1;
+        cout << "Главный стек пуст";
 }
 
 /// <summary>
@@ -113,7 +112,7 @@ StackElement* PushCountRandom(int count, StackElement* sp)
 /// </summary>
 /// <param name="sp"></param>
 /// <param name="sp_second"></param>
-void PushToSecond(StackElement* sp, StackElement* sp_second) 
+void PushToSecond(StackElement*& sp, StackElement*& sp_second) 
 {
     StackElement* current = sp;
     sp = sp->Next;
@@ -126,7 +125,7 @@ void PushToSecond(StackElement* sp, StackElement* sp_second)
 /// </summary>
 /// <param name="sp"></param>
 /// <param name="sp_second"></param>
-void AddFromSecond(StackElement* sp, StackElement* sp_second) 
+void AddFromSecond(StackElement*& sp, StackElement*& sp_second) 
 {
     StackElement* current = sp_second;
     sp_second = sp_second->Next;
@@ -149,6 +148,103 @@ int inputHandler() {
     return a;
 }
 
+void Menu(StackElement*& sp, StackElement*& sp_second) 
+{
+    bool expression = true;
+    while (expression)
+    {
+        cout << "--------------------------------------------------------------\n";
+        cout << "Выберите действие:\n";
+        cout << "1. Проверить, пуст ли стек.\n";
+        cout << "2. Вывести состояние главного стека.\n";
+        cout << "3. Вывести состояние вспомогательного.\n";
+        cout << "4. Добавить элемент в вершину главного стека.\n";
+        cout << "5. Удалить элемент из вершины главного стека.\n";
+        cout << "6. Добавление нескольких случайных элементов в вершину главного стека.\n";
+        cout << "0. Завершение работы программы.\n";
+        cout << ">> ";
+        int choice = inputHandler();;
+        switch (choice)
+        {
+        case 1:
+            if (isStackEmpty(sp))
+                cout << "\nГлавный стек пуст.\n";
+            else
+                cout << "\nГлавный стек не пуст.\n";
+            break;
+        case 2:
+            PrintInformationStack(sp);
+            break;
+        case 3:
+            PrintInformationStack(sp_second);
+            break;
+        case 4:
+            int choice;
+            cout << "Выберите действие:\n";
+            cout << "1. Действительно создать новоый элемент.\n";
+            cout << "2. Выбрать его с вершины вспомогательного стека.\n>> ";
+            cin >> choice;
+            if (choice == 1)
+            {
+                int value;
+                cout << "Введите значение, которое хотите занести: ";
+                cin >> value;
+                sp = Push(value, sp);
+                cout << "\nНовый элемент добавлен.\n";
+            }
+            else if (choice == 2)
+            {
+                if (isStackEmpty(sp_second))
+                {
+                    cout << "Вспомогательный список пуст.\n";
+                    break;
+                }
+                AddFromSecond(sp, sp_second);
+                cout << "\nЭлемент перемещён.\n";
+            }
+            else
+                cout << "Вы пытаетесь выбрать несуществующее действие. Попробуйте еще раз.\n";
+            break;
+        case 5:
+            if (isStackEmpty(sp))
+            {
+                cout << "Главный стек пуст, удаление невозможно.\n";
+                break;
+            }
+            int deleteChoice;
+            cout << "Выберите действие:\n";
+            cout << "1. Действительно удалить элемент с освобождением памяти.\n";
+            cout << "2. Включить его в вершину вспомогательного стека удаленных элементов.\n>> ";
+            cin >> deleteChoice;
+            if (deleteChoice == 1)
+            {
+                Pop(sp);
+                cout << "\nЭлемент из вершины стека удалён.\n";
+            }
+            else if (deleteChoice == 2)
+            {
+                PushToSecond(sp, sp_second);
+                cout << "Элемент из вершины стека включён в вершину вспомогательного стека.\n";
+            }
+            else
+                cout << "Вы пытаетесь выбрать несуществующее действие. Попробуйте еще раз.\n";
+            break;
+        case 6:
+            int count;
+            cout << "Сколько элементов Вы хотите добавить? ";
+            cin >> count;
+            sp = PushCountRandom(count, sp);
+            break;
+        case 0:
+            expression = false;
+            break;
+        default:
+            cout << "Вы пытаетесь выбрать несуществующее действие. Попробуйте еще раз.\n";
+            break;
+        }
+    }
+}
+
 int main()
 {
     setlocale(LC_ALL, "RUSSIAN");
@@ -159,8 +255,6 @@ int main()
 
     initStack(sp, sp_second);
 
-    sp = PushCountRandom(5, sp);
-
-    PrintInformationStack(sp);
+    Menu(sp, sp_second);
 }
 
