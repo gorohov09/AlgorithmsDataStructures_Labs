@@ -92,19 +92,68 @@ int inputHandler() {
     return a;
 }
 
+void Menu(Queue* q)
+{
+    bool expression = true;
+    while (expression)
+    {
+        cout << "--------------------------------------------------------------\n";
+        cout << "Выберите действие:\n";
+        cout << "1. Проверить, пуста ли очередь.\n";
+        cout << "2. Проверить заполненность.\n";
+        cout << "3. Добавить элемент в очередь.\n";
+        cout << "4. Удалить элемент из очереди.\n";
+        cout << "5. Вывести состояние очереди.\n";
+        cout << "0. Завершение работы программы.\n";
+        cout << ">> ";
+        int choice = inputHandler();;
+        switch (choice)
+        {
+        case 1:
+            if (IsEmpty(q))
+                cout << "Очередь пуста" << endl;
+            else
+                cout << "Очередь не пуста!" << endl;
+            break;
+        case 2:
+            if (IsFull(q))
+                cout << "Очередь заполнена" << endl;
+            else
+                cout << "Очередь не заполнена!" << endl;
+            break;
+        case 3:
+            int value;
+            cout << "Введите значение, которое хотите добавить: ";
+            cin >> value;
+            Push(q, value);
+            break;
+        case 4:
+            Pop(q);
+            break;
+        case 5:
+            ShowQueue(q);
+            break;
+        case 0:
+            expression = false;
+            break;
+        default:
+            cout << "Вы пытаетесь выбрать несуществующее действие. Попробуйте еще раз.\n";
+            break;
+        }
+    }
+}
+
 int main()
 {
     setlocale(LC_ALL, "RUSSIAN");
 
     Queue* q = new Queue;
+
+    setlocale(LC_ALL, "RUSSIAN");
+    srand(static_cast<unsigned int>(time(0)));
+
     InitQueue(q);
-    Push(q, 55);
-    ShowQueue(q);
-    Push(q, 12);
-    ShowQueue(q);
-    Push(q, 43);
-    ShowQueue(q);
-    Pop(q);
-    ShowQueue(q);
+
+    Menu(q);
 }
 
