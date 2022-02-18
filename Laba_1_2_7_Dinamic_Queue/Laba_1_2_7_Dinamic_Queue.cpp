@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <ctime>
 #include <Windows.h>
+#include <conio.h>
 
 using namespace std;
 
@@ -104,9 +105,41 @@ int RandomCount() {
 
 void CallMenu(QueueElement*& pFirst, QueueElement*& pLast) {
     unsigned int start = clock();
-    
-    while (true)
+    const char KEY_ESC_CODE = 27;
+    int key = 0;
+
+    int popCount, pushCount, choice;
+    popCount = pushCount = 0;
+    bool cycle = true;
+    cout << "Выберите линию поведения программы:\n";
+    cout << "1. Случайное число добавляемых и удаляемых элементов одинаково.\n";
+    cout << "2. Число добавляемых элементов чуть больше числа удаляемых.\n";
+    cout << "3. Число удаляемых элементов чуть больше числа добавляемых.\n>> ";
+    while (cycle)
     {
+        choice = inputHandler() - '0';
+        switch (choice)
+        {
+        case 1:
+            cycle = false;
+            break;
+        case 2:
+            pushCount = 1;
+            cycle = false;
+            break;
+        case 3:
+            popCount = 1;
+            cycle = false;
+            break;
+        default:
+            cout << "Вы пытаетесь выбрать несуществующее действие. Попробуйте еще раз.\n>> ";
+            break;
+        }
+    }
+    
+    while (key != 'q')
+    {
+
         cout << "--------------------------------------------------------------\n";
         int randomizer = rand() % 100 + 1;
         if (randomizer % 2 != 0)
@@ -114,7 +147,7 @@ void CallMenu(QueueElement*& pFirst, QueueElement*& pLast) {
             cout << "Операция... удаление!\n";
             if (!IsEmpty(pFirst))
             {
-                int count = RandomCount();
+                int count = RandomCount() + popCount;
                 PopCountRandom(pFirst, pLast, count);
                 cout << "Количество удалённых элементов: " << count << endl;
             }
@@ -124,30 +157,36 @@ void CallMenu(QueueElement*& pFirst, QueueElement*& pLast) {
         else
         {
             cout << "Операция... добавление!\n";
-            int count = RandomCount();
+            int count = RandomCount() + pushCount;
             PushCountRandom(pFirst, pLast, count);
             cout << "Количество добавленных элементов: " << count << endl;
         }
         cout << "Текущее состояние очереди:\n";
         Show(pFirst);
         Sleep(2000);
-        unsigned int end = clock();
-        if (end - start > 15000)
-        {
-            while (true)
-            {
-                cout << "\nНажмите на клавишу 'c', чтобы продолжить выполнение программы.\n";
-                cout << "Нажмите клавишу 'q', чтобы завершить работу программы.\n";
-                char val = inputHandler();
-                if (val == 'c')
-                    break;
-                else if (val == 'q')
-                    exit(0);
-                else
-                    cout << "\nПроверьте корректность ввода.\n";
-            }
-            start = clock();
+
+        if (_kbhit()) {
+            key = _getch();
         }
+#pragma region MyRegion
+        /*unsigned int end = clock();
+                if (end - start > 15000)
+                {
+                    while (true)
+                    {
+                        cout << "\nНажмите на клавишу 'c', чтобы продолжить выполнение программы.\n";
+                        cout << "Нажмите клавишу 'q', чтобы завершить работу программы.\n";
+                        char val = inputHandler();
+                        if (val == 'c')
+                            break;
+                        else if (val == 'q')
+                            exit(0);
+                        else
+                            cout << "\nПроверьте корректность ввода.\n";
+                    }
+                    start = clock();
+                }*/
+#pragma endregion
     }
 }
 
