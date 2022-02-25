@@ -1,4 +1,8 @@
 ﻿#include <iostream>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#define DBG_NEW new( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define newDBG_NEW
 
 using namespace std;
 
@@ -81,6 +85,11 @@ void ShowQueue(Queue* q)
         cout << "Очередь пуста" << endl;
 }
 
+void CleanMemory(Queue* q) 
+{
+    delete q;
+}
+
 int inputHandler() {
     int a;
     while (!(cin >> a) || (cin.peek() != '\n'))
@@ -155,5 +164,8 @@ int main()
     InitQueue(q);
 
     Menu(q);
+
+    CleanMemory(q);
+    _CrtDumpMemoryLeaks();
 }
 
