@@ -1,4 +1,8 @@
 ﻿#include <iostream>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#define DBG_NEW new( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define newDBG_NEW
 
 using namespace std;
 
@@ -142,6 +146,10 @@ void Pop(List* my_list)
     }
 }
 
+void CleanMemory(List* my_list) 
+{
+    delete my_list;
+}
 
 
 void CallMenu(List* l)
@@ -187,7 +195,8 @@ int main()
     List* list = new List;
     InitList(list);
     CallMenu(list);
-    return 0;
+    CleanMemory(list);
+    _CrtDumpMemoryLeaks();
 }
 
 

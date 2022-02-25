@@ -2,6 +2,10 @@
 #include <ctime>
 #include <Windows.h>
 #include <conio.h>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#define DBG_NEW new( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define newDBG_NEW
 
 using namespace std;
 
@@ -85,6 +89,22 @@ void Show(QueueElement*& pFirst)
     }
     else
         cout << "Очередь пуста \n";
+}
+
+void CleanMemory(QueueElement*& pFirst, QueueElement*& pLast)
+{
+    if (!IsEmpty(pFirst))
+    {
+        /*QueueElement* pTemp;
+        pTemp = pFirst->Next;*/
+        while (pFirst->Next != NULL)
+        {
+            Pop(pFirst, pLast);
+        }
+        cout << "Очистка  памяти выполнена успешно" << endl;
+    }
+    else
+        cout << "Очередь пуста, очистка памяти невозможна \n";
 }
 
 int inputHandler()
@@ -202,5 +222,9 @@ int main()
     InitQueue(pFirst, pLast);
 
     CallMenu(pFirst, pLast);
+
+    CleanMemory(pFirst, pLast);
+    _CrtDumpMemoryLeaks();
+
 }
 

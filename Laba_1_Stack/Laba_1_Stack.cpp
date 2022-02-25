@@ -1,5 +1,9 @@
 ﻿#include <iostream>
 #include <ctime>
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#define DBG_NEW new( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define newDBG_NEW
 
 using namespace std;
 
@@ -133,6 +137,20 @@ void AddFromSecond(StackElement*& sp, StackElement*& sp_second)
     sp = current;
 }
 
+void CleanMemory(StackElement*& sp) 
+{
+    if (isStackEmpty(sp))
+        cout << "\nСтек пуст, очистка памяти невозможна\n";
+    else
+    {
+        while (sp != NULL)
+        {
+            Pop(sp);
+        }
+        cout << "Очистка памяти выполнена успешно" << endl;
+    }
+}
+
 /// <summary>
 /// Проверка введеных данных
 /// </summary>
@@ -256,5 +274,8 @@ int main()
     initStack(sp, sp_second);
 
     Menu(sp, sp_second);
+    CleanMemory(sp);
+    CleanMemory(sp_second);
+    _CrtDumpMemoryLeaks();
 }
 
