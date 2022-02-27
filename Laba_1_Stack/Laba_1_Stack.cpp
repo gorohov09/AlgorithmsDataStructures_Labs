@@ -49,11 +49,11 @@ void PrintInformationStack(StackElement* sp)
         cout << "\nСтек пуст\n";
     else
     {
-        StackElement* pCurrent = sp;
+        StackElement* pCurrent = sp; //Вспомогательная ссылочная переменная(на каждом шаге определяет адрес текущего элемента)
         while (pCurrent != NULL)
         {
-            cout << pCurrent->Value << endl;
-            pCurrent = pCurrent->Next;
+            cout << pCurrent->Value << endl; //Выводим информацию
+            pCurrent = pCurrent->Next; //Меняем указатель на следующий элемент
         }
     }
 }
@@ -66,15 +66,15 @@ void PrintInformationStack(StackElement* sp)
 /// <returns></returns>
 StackElement* Push(int value, StackElement* sp)
 {
-    StackElement* pTemp = new StackElement;
+    StackElement* pTemp = new StackElement; //Выделяем память для размещения нового элемента с помощью вспомогательной ссылочной переменной
 
-    pTemp->Value = value;
+    pTemp->Value = value; //Заносим информацию
 
-    pTemp->Next = sp;
+    pTemp->Next = sp; //установливаем адресную часть нового элемента таким образом, чтобы она определяла адрес бывшего вершинного элемента
 
-    sp = pTemp;
+    sp = pTemp; //Изменяем адрес вершины стека
 
-    return sp;
+    return sp; //Возвращаем новый адрес
 }
 
 /// <summary>
@@ -86,9 +86,9 @@ void Pop(StackElement*& sp)
 {
     if (!isStackEmpty(sp))
     {
-        StackElement* pTemp = sp;
-        sp = sp->Next;
-        delete pTemp;
+        StackElement* pTemp = sp; //С помощью вспомогательной переменной адресуем удаляемый элемент
+        sp = sp->Next; //Изменяем значение переменной sp на адрес новой вершины стека
+        delete pTemp; //Обрабатываем удаленный элемент
     }
     else
         cout << "Главный стек пуст";
@@ -118,9 +118,9 @@ StackElement* PushCountRandom(int count, StackElement* sp)
 /// <param name="sp_second"></param>
 void PushToSecond(StackElement*& sp, StackElement*& sp_second) 
 {
-    StackElement* current = sp;
-    sp = sp->Next;
-    current->Next = sp_second;
+    StackElement* current = sp; //Ссылаемся на вершину главного стека
+    sp = sp->Next; //Меняем вершину главного стека
+    current->Next = sp_second; //Делаем временную переменную головой второстепенного стека
     sp_second = current;
 }
 

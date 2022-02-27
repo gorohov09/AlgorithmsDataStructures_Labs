@@ -8,6 +8,8 @@ using namespace std;
 
 const int ARRAY_SIZE = 5;
 
+//First - первая занятая ячейка в массиве
+//Last - первая свобожная ячейка в массиве
 struct Queue
 {
     int First, Last; //Указатели на начало и конец очереди
@@ -17,12 +19,12 @@ struct Queue
 
 void InitQueue(Queue* q) 
 {
-    q->First = 0;
+    q->First = 0; //Определяем пустую очередь
     q->Last = 0;
     q->count = 0;
 }
 
-bool IsEmpty(Queue* q) 
+bool IsEmpty(Queue* q) //Проверка пустоты
 {
     if (q->count == 0)
         return true;
@@ -30,7 +32,7 @@ bool IsEmpty(Queue* q)
         return false;
 }
 
-bool IsFull(Queue* q) 
+bool IsFull(Queue* q) //Проверка заполненности
 {
     if (q->count == ARRAY_SIZE)
         return true;
@@ -40,12 +42,12 @@ bool IsFull(Queue* q)
 
 void Push(Queue* q, int value) 
 {
-    if (q->count != ARRAY_SIZE)
+    if (q->count != ARRAY_SIZE) //Проверка возможности добавления
     {
-        q->array_queue[q->Last] = value;
-        q->Last++;
-        if (q->Last == ARRAY_SIZE)
-            q->Last = 0;
+        q->array_queue[q->Last] = value; //Добавляем элемент в массив по индексу Last
+        q->Last++; //Изменяем указатель
+        if (q->Last == ARRAY_SIZE) //Если Last выходит за пределы массива
+            q->Last = 0; //Изменить Last на 0
         q->count++;
         cout << "Элемент успешно добавлен в очередь" << endl;
     }
@@ -55,13 +57,13 @@ void Push(Queue* q, int value)
 
 void Pop(Queue* q) 
 {
-    if (IsEmpty(q) != true)
+    if (IsEmpty(q) != true) //Проверить на возможность удаления
     {
-        int value = q->array_queue[q->First];
+        int value = q->array_queue[q->First]; //Извлекаем элемент по индексу First
         cout << "Элемент: " << value << " удален!" << endl;
-        q->First++;
-        if (q->First == ARRAY_SIZE)
-            q->First = 0;
+        q->First++; //Увеличиваем указатель First
+        if (q->First == ARRAY_SIZE) //Если First выходит за пределы массива
+            q->First = 0; //Устанавливаем в 0
         q->count--;
     }
     else
@@ -70,7 +72,7 @@ void Pop(Queue* q)
 
 void ShowQueue(Queue* q) 
 {
-    if (IsEmpty(q) != true)
+    if (IsEmpty(q) != true) 
     {
         int current = q->First;
         do

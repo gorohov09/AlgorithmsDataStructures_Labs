@@ -149,6 +149,7 @@ void Pop(List* my_list)
 void CleanMemory(List* my_list) 
 {
     delete my_list;
+    cout << "Очистка памяти выполнена успешно" << endl;
 }
 
 

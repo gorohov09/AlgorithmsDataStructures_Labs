@@ -17,14 +17,14 @@ struct QueueElement
 
 void InitQueue(QueueElement*& pFirst, QueueElement*& pLast) 
 {
-    pFirst = new QueueElement;
-    pFirst->Next = NULL;
-    pLast = pFirst;
+    pFirst = new QueueElement; //Выделение памяти для заголовка(фиктивного)
+    pFirst->Next = NULL; //Занесение в ссылочную часть пустого указателя
+    pLast = pFirst; //Установка указателя конца очереди на pFirst
 }
 
 bool IsEmpty(QueueElement* pFirst) 
 {
-    if (pFirst->Next == NULL)
+    if (pFirst->Next == NULL) //Услоивие пустой очереди
         return true;
     else
         return false;
@@ -32,11 +32,11 @@ bool IsEmpty(QueueElement* pFirst)
 
 void Push(QueueElement*& pFirst, QueueElement*& pLast, char symbol) 
 {
-    QueueElement* pTemp = new QueueElement;
-    pTemp->Next = NULL;
+    QueueElement* pTemp = new QueueElement; //Выделяем память для нового элемента
+    pTemp->Next = NULL; //Заполняем поля
     pTemp->Value = symbol;
-    pLast->Next = pTemp;
-    pLast = pTemp;
+    pLast->Next = pTemp; //изменяем связующую часть бывшего последнего элемента таким образом, чтобы она адресовала новый добавленный элемент
+    pLast = pTemp; //изменяем значение указателя pLast так, чтобы он указывал новый последний элемент
 }
 
 void PushCountRandom(QueueElement*& pFirst, QueueElement*& pLast, int count)
@@ -54,12 +54,12 @@ void Pop(QueueElement*& pFirst, QueueElement*& pLast)
     {
         QueueElement* pTemp;
 
-        pTemp = pFirst->Next;
-        pFirst->Next = pTemp->Next;
+        pTemp = pFirst->Next; //Адресуем удаляемый элемент с помощью вспомогательной переменной
+        pFirst->Next = pTemp->Next; //Изменяем связующую часть заголовка так, чтобы она указывала на второй элемент очереди
 
-        if (IsEmpty(pFirst))
+        if (IsEmpty(pFirst)) //Если после удаления в списке не остается реальных элементов
             pLast = pFirst;
-        delete pTemp;
+        delete pTemp; //Удаляем элемент
     }
     else
         cout << "Очередь пуста \n";
@@ -77,13 +77,13 @@ void Show(QueueElement*& pFirst)
 {
     if (!IsEmpty(pFirst))
     {
-        QueueElement* pTemp;
-        pTemp = pFirst->Next;
+        QueueElement* pTemp; //Вводим вспомогательную ссылочную переменную
+        pTemp = pFirst->Next; //Устанавливаем в нее адрес первого элемента
         cout << "<-[";
         while (pTemp != NULL)
         {
             cout << pTemp->Value << ", "; // обработка указателя (вывод в консоль)
-            pTemp = pTemp->Next;
+            pTemp = pTemp->Next; //Изменяем указатель
         }
         cout << "]<-" << endl;
     }
@@ -216,8 +216,8 @@ int main()
     srand(static_cast<unsigned int>(time(0)));
     cout << "Генератор псевдослучайных чисел инициирован.\n";
 
-    QueueElement* pFirst = NULL;
-    QueueElement* pLast = NULL;
+    QueueElement* pFirst = NULL; //Указатель на начало очереди
+    QueueElement* pLast = NULL; //Указатель на конец очереди
 
     InitQueue(pFirst, pLast);
 
