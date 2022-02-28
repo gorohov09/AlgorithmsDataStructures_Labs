@@ -22,7 +22,6 @@ void InitList(List* my_list)
     my_list->ListArray[0].Next = 0;
     for (int i = 1; i < ARRAY_SIZE; i++)
         my_list->ListArray[i].Next = -1;
-    //my_list->ListArray[ARRAY_SIZE - 1].Next = 0;
 }
 
 int inputHandler()
@@ -116,107 +115,111 @@ int memoryManager(List* my_list)
 
 void PushAfter(List* my_list) 
 {
-    if (!FilledCheck(my_list))
+    if (FilledCheck(my_list))
+        cout << "Cписок заполнен! Добавление невозможно.\n";
+    else
     {
-        if (!EmptyCheck(my_list))
+        if (EmptyCheck(my_list))
+        {
+            int temp = 1;
+            cout << "Введите значение нового элемента: ";
+            int elem = inputHandler();
+            my_list->ListArray[temp].Inf = elem;
+            my_list->ListArray[temp].Next = 0;
+            my_list->ListArray[0].Next = temp;
+            my_list->count++;
+        }
+        else
         {
             cout << "Введите значение элемента, после которого нужно вставить новый: ";
-            int el = inputHandler();
-            int pos = FindElement(my_list, el);
-            if (pos == -1)
-                cout << "Элемент не найден" << endl;
+            int pos = inputHandler();
+            int current = my_list->ListArray[0].Next;
+            while (current != 0)
+            {
+                if (my_list->ListArray[current].Inf == pos)
+                    break;
+                current = my_list->ListArray[current].Next;
+            }
+            if (current == 0)
+                cout << "Элемент не найден.\n";
             else
             {
-                int free_pos = memoryManager(my_list);
+                int temp = memoryManager(my_list); // свободная ячейка
                 cout << "Введите значение нового элемента: ";
                 int elem = inputHandler();
-                my_list->ListArray[free_pos].Next = my_list->ListArray[pos].Next;
-                my_list->ListArray[pos].Next = free_pos;
-                my_list->ListArray[free_pos].Inf = elem;
+                my_list->ListArray[temp].Inf = elem;
+                my_list->ListArray[temp].Next = my_list->ListArray[current].Next;
+                my_list->ListArray[current].Next = temp;
                 my_list->count++;
             }
         }
-        else 
-        {
-            cout << "Введите значение нового элемента: ";
-            int elem = inputHandler();
-            my_list->ListArray[1].Inf = elem;
-            my_list->ListArray[1].Next = 0;
-            my_list->ListArray[0].Next = 1;
-            my_list->count++;
-        }
     }
-    else
-        cout << "Список заполнен. Добавление невозможно!" << endl;
+    
 }
 
 void PushBefore(List* my_list) 
 {
-    if (!FilledCheck(my_list))
+    if (!FilledCheck(my_list)) 
     {
         cout << "Введите значение элемента, перед которым нужно вставить новый: ";
-        int el = inputHandler();
-        int i = FindElement(my_list, el);
-        if (i == 1) {
-            cout << "Нельзя добавлять элемент перед первым элементом списка!" << endl;
-            return;
+        int pos = inputHandler();
+        int current = my_list->ListArray[0].Next;
+        int prev = 0;
+        while (current != 0)
+        {
+            if (my_list->ListArray[current].Inf == pos)
+                break;
+            prev = current;
+            current = my_list->ListArray[current].Next;
         }
-        if (i == -1)
-            cout << "Элемент не найден" << endl;
+        if (current == 0)
+            cout << "Элемент не найден.\n";
         else
         {
-            int s;
-            int Current = my_list->ListArray[0].Next;
-            while (Current != -1)
-            {
-                if (my_list->ListArray[Current].Inf == el)
-                    break;
-                s = Current;
-                Current = my_list->ListArray[Current].Next;
-            }
+            int temp = memoryManager(my_list);
             cout << "Введите значение нового элемента: ";
             int elem = inputHandler();
-            int j = memoryManager(my_list);
-            my_list->ListArray[j].Next = i;
-            my_list->ListArray[s].Next = j;
-            my_list->ListArray[j].Inf = elem;
+            my_list->ListArray[temp].Inf = elem;
+            my_list->ListArray[temp].Next = current;
+            my_list->ListArray[prev].Next = temp;
             my_list->count++;
         }
-    }
+    }  
     else
-        cout << "Список заполнен. Добавление невозможно!" << endl;
+    {
+        cout << "Добавление невозможно" << endl;
+    }
 }
 
 void Pop(List* my_list) 
 {
-    if (!EmptyCheck(my_list))
+    if (!EmptyCheck(my_list)) 
     {
-        cout << "Введите значение элемента, который нужно удалить: ";
-        int el = inputHandler();
-        int i = FindElement(my_list, el);
-        if (i == -1)
-            cout << "Элемент не найден" << endl;
+        cout << endl << "Введите значение удаляемого элемента: ";
+        int pos = inputHandler();
+        int current = my_list->ListArray[0].Next;
+        int prev = 0;
+        while (current != 0)
+        {
+            if (my_list->ListArray[current].Inf == pos)
+                break;
+            prev = current;
+            current = my_list->ListArray[current].Next;
+        }
+        if (current == 0)
+            cout << "Элемент не найден.\n";
         else
         {
-            int Current = my_list->ListArray[0].Next;
-            int s = 0;
-            while (Current != 0)
-            {
-                if (my_list->ListArray[Current].Inf == el)
-                    break;
-                s = Current;
-                Current = my_list->ListArray[Current].Next;
-            }
-            my_list->ListArray[s].Next = my_list->ListArray[i].Next;
-            my_list->ListArray[i].Next = -1;
+            my_list->ListArray[prev].Next = my_list->ListArray[current].Next;
+            my_list->ListArray[current].Next = -1;
             my_list->count--;
-            cout << "Элемент" << el << " удален" << endl;
         }
-    }
+    }   
     else
     {
         cout << "Список пустой. Удаление невозможно" << endl;
     }
+    
 }
 
 void CleanMemory(List* my_list) 

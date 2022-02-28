@@ -66,15 +66,22 @@ void PrintInformationStack(StackElement* sp)
 /// <returns></returns>
 StackElement* Push(int value, StackElement* sp)
 {
-    StackElement* pTemp = new StackElement; //Выделяем память для размещения нового элемента с помощью вспомогательной ссылочной переменной
+    try
+    {
+        StackElement* pTemp = new StackElement; //Выделяем память для размещения нового элемента с помощью вспомогательной ссылочной переменной
 
-    pTemp->Value = value; //Заносим информацию
+        pTemp->Value = value; //Заносим информацию
 
-    pTemp->Next = sp; //установливаем адресную часть нового элемента таким образом, чтобы она определяла адрес бывшего вершинного элемента
+        pTemp->Next = sp; //установливаем адресную часть нового элемента таким образом, чтобы она определяла адрес бывшего вершинного элемента
 
-    sp = pTemp; //Изменяем адрес вершины стека
+        sp = pTemp; //Изменяем адрес вершины стека
 
-    return sp; //Возвращаем новый адрес
+        return sp; //Возвращаем новый адрес
+    }
+    catch (const std::exception&)
+    {
+        cout << "Стек заполнен" << endl;
+    }
 }
 
 /// <summary>
