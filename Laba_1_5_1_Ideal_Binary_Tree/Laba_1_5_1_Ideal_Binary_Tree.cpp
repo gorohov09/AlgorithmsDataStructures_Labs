@@ -75,8 +75,8 @@ void Symmetric(TNode* pCurrent, int level)
 {
     if (pCurrent != NULL)
     {
-        Symmetric(pCurrent->Left, level);
         level++;
+        Symmetric(pCurrent->Left, level);
         for (int i = 0; i < level - 1; i++)
         {
             cout << "   ";
@@ -90,14 +90,14 @@ void Back(TNode* pCurrent, int level)
 {
     if (pCurrent != NULL)
     {
-        Symmetric(pCurrent->Right, level);
         level++;
+        Back(pCurrent->Right, level);
         for (int i = 0; i < level - 1; i++)
         {
             cout << "   ";
         }
         cout << pCurrent->Inf << endl;
-        Symmetric(pCurrent->Left, level);
+        Back(pCurrent->Left, level);
     }
 }
 
@@ -153,6 +153,5 @@ int main()
     TNode* TRoot = new TNode;
     InitTree(TRoot);
     callMenu(TRoot);
-    return 0;
 }
 
