@@ -11,7 +11,7 @@ struct ListItem
 
 void InitList(ListItem*& pHead) 
 {
-    pHead = new ListItem;
+    pHead = new ListItem; //Выделение памяти под заголовок
     pHead->left = pHead;
     pHead->right = pHead;
 }
@@ -41,7 +41,7 @@ void ShowForward(ListItem* pHead)
     if (!EmptyCheck(pHead, pHead->right))
     {
         ListItem* pCurrent = pHead->right;
-        while (pCurrent != pHead)
+        while (pCurrent != pHead) //Условие получение головы списка
         {
             cout << pCurrent->inf << " ";
             pCurrent = pCurrent->right;
