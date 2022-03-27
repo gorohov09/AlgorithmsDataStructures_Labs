@@ -38,23 +38,25 @@ bool EmptyCheck(TNode* pRoot)
 }
 
 
-bool SymmetricSearchVertex(TNode* pCurrent, int inf)
+bool SymmetricSearchVertex(TNode* pCurrent, int inf) //Рекурсивный поиск
 {
     bool search = false;
-    if (pCurrent != NULL) 
+    if (pCurrent != NULL) //Проверка текущей вершины на существование
     {
-        if (pCurrent->Inf == inf) 
+        if (pCurrent->Inf == inf)  //Сравниваю
         {
             search = true;
-            Parent = pCurrent;
+            Parent = pCurrent; //Устанавливаю адрес родительской вершины
             return search;
         }
         else 
         {
-            SymmetricSearchVertex(pCurrent->Left, inf);
-            SymmetricSearchVertex(pCurrent->Right, inf);
+            SymmetricSearchVertex(pCurrent->Left, inf); //Ищу слева
+            SymmetricSearchVertex(pCurrent->Right, inf); //Ищу справа
         }
     }
+
+    return search;
 }
 
 void AddVertex(TNode*& pCurrent) 
@@ -67,7 +69,7 @@ void AddVertex(TNode*& pCurrent)
         temp->Left = NULL;
         temp->Right = NULL;
         pCurrent = temp;
-        verticesCount++;
+        verticesCount++; 
     }
     else
     {
@@ -76,13 +78,13 @@ void AddVertex(TNode*& pCurrent)
 
         bool result_searching = SymmetricSearchVertex(pCurrent, parentInf);
 
-        if (result_searching == true) 
+        if (result_searching == true) //Если нашли родительскую вершину
         {
-            if ((Parent->Left != NULL) && (Parent->Right != NULL)) 
+            if ((Parent->Left != NULL) && (Parent->Right != NULL)) //Имеет двух потомков
             {
                 cout << "Добавление невозможно, так как родительская вершина имеет двух потомков" << endl;
             }
-            else if ((Parent->Left == NULL) && (Parent->Right != NULL)) 
+            else if ((Parent->Left == NULL) && (Parent->Right != NULL)) //Имеет одного потомка справа
             {
                 cout << "Родительская вершина имеет потомка справа. Добавление будет слева" << endl;
                 cout << "Введите значение вершины: ";
@@ -94,7 +96,7 @@ void AddVertex(TNode*& pCurrent)
                 Parent->Left = temp;
                 verticesCount++;
             }
-            else if ((Parent->Left != NULL) && (Parent->Right == NULL)) 
+            else if ((Parent->Left != NULL) && (Parent->Right == NULL)) //Имеет одного потомка слева
             {
                 cout << "Родительская вершина имеет потомка слева. Добавление будет справа" << endl;
                 cout << "Введите значение вершины: ";
@@ -106,16 +108,16 @@ void AddVertex(TNode*& pCurrent)
                 Parent->Right = temp;
                 verticesCount++;
             }
-            else 
+            else //Не имеет потомков
             {
-                cout << "Родительская вершина не имеет потомков" << endl;
+                cout << "Родительская вершина не имеет потомков" << endl; 
                 cout << "Введите значение вершины: ";
                 int Inf = inputHandler();
                 cout << "Введите куда добавить(1 - слева; 2 - справа): ";
                 int select = inputHandler();
                 while (true)
                 {
-                    if (select == 1)
+                    if (select == 1) //Добавляем слева
                     {
                         TNode* temp = new TNode;
                         temp->Inf = Inf;
@@ -124,7 +126,7 @@ void AddVertex(TNode*& pCurrent)
                         Parent->Left = temp;
                         break;
                     }
-                    else if (select == 2)
+                    else if (select == 2) //Добавляем справа
                     {
                         TNode* temp = new TNode;
                         temp->Inf = Inf;
@@ -163,10 +165,11 @@ void Back(TNode* pCurrent, int level)
 
 void DeleteTree(TNode*& pCurrent) 
 {
-    if (pCurrent != NULL) 
+    if (pCurrent != NULL) //Удаление 
     {
         DeleteTree(pCurrent->Left);
         DeleteTree(pCurrent->Right);
+        cout << "Удаление вершины, со значением: " << pCurrent->Inf << endl;
         delete pCurrent;
         verticesCount--;
     }
@@ -207,7 +210,10 @@ void callMenu(TNode*& TRoot)
             AddVertex(TRoot);
             break;
         case 3:
-            Back(TRoot, 0);
+            if (TRoot == NULL)
+                cout << "Дерево пустое" << endl;
+            else
+                Back(TRoot, 0);
             break;
         case 4:
             if (EmptyCheck(TRoot))
@@ -216,6 +222,7 @@ void callMenu(TNode*& TRoot)
             {
                 DeleteTree(TRoot);
                 cout << "Двоичное дерево удалено.\n";
+                TRoot = NULL;
             }
             break;
         case 0:

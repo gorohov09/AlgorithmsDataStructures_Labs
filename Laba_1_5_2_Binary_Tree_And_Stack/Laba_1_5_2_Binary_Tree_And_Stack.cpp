@@ -13,7 +13,7 @@ struct TNode
 struct StackItem 
 {
     int level;
-    TNode* TreeItem;
+    TNode* TreeItem; //Указатель на пройденную вершину дерева
     StackItem* pNext;
 };
 
@@ -116,39 +116,31 @@ void NoRecursiveForward(TNode* pCurrent, StackItem* sp)
 
     while (stop) 
     {
-        while (Current != NULL) 
+        while (Current != NULL) //Пока не достигнута пустая вершина
         {
-            StackItem* newItem = new StackItem;
+            StackItem* newItem = new StackItem; //Создание элемента стека
 
-            if (newItem == NULL) 
-            {
-                stop = false;
-                break;
-            }
-            else 
-            {
-                level++;
-                newItem->level = level;
-                newItem->TreeItem = Current;
-                newItem->pNext = sp;
-                sp = newItem;
-                Current = Current->Left;
-            }
+            level++; //Увеличение уровня вершины
+            newItem->level = level; //Заполнение всех полей
+            newItem->TreeItem = Current;
+            newItem->pNext = sp; //Добавление в стек
+            sp = newItem;
+            Current = Current->Left; //Переход к левому потомку
         }
 
-        if (sp == NULL)
-            stop = false;
+        if (sp == NULL) //Если стек пустой, завершаем основной цикл
+            stop = false; 
         else 
         {
-            Current = sp->TreeItem;
+            Current = sp->TreeItem; //Извлекаем из стека адрес текущей вершины и ее уровень
             level = sp->level;
             for (int i = 0; i < level; i++) {
-                cout << "    ";
+                cout << "    "; //Вывод информации
             }
-            cout << Current->Inf << endl;
-            Current = Current->Right;
+            cout << Current->Inf << endl; 
+            Current = Current->Right; //Переходим к правому потомку вершины
             StackItem* temp = sp;
-            sp = sp->pNext;
+            sp = sp->pNext; //Удаление элемента стека
             delete temp;
         }
     }

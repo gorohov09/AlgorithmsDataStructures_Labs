@@ -5,8 +5,8 @@ using namespace std;
 
 struct TNode
 {
-    int Inf;
-    int count;
+    int Inf; //Поле, по которому упорядочем все вершины
+    int count; //Счетчик дубликатов
     TNode* Left;
     TNode* Right;
 };
@@ -41,31 +41,31 @@ void Searching(TNode* TRoot, int inf)
     TNode* pCurrent = TRoot;
     bool stop = false;
 
-    while (!stop && pCurrent != NULL) 
+    while (!stop && pCurrent != NULL)  //Либо нашли элемент, либо в пустом поддереве
     {
-        if (pCurrent->Inf == inf) 
+        if (pCurrent->Inf == inf) //Если нашли, то завершаем обход
         {
             stop = true;
             break;
         }
             
-        if (pCurrent->Inf > inf)
+        if (pCurrent->Inf > inf) //Если значение ключа, меньше, текущей вершины, переходим к левому потомку
             pCurrent = pCurrent->Left;
         else
-            pCurrent = pCurrent->Right;
+            pCurrent = pCurrent->Right; //Иначе - к правому
     }
 
-    if (stop == true)
+    if (stop == true) //Если нашли
         cout << "Значение вершины: " << pCurrent->Inf << "Счетчик: " << pCurrent->count << endl;
-    else
+    else //Нашли
         cout << "Вершина не найдена!" << endl;
 }
 
 void AddVertex(TNode*& pCurrent, int inf)
 {
-    if (pCurrent == NULL) 
+    if (pCurrent == NULL) //Если пустая ссылка
     {
-        pCurrent = new TNode;
+        pCurrent = new TNode; //Создаем ее 
         pCurrent->Inf = inf;
         pCurrent->Left = NULL;
         pCurrent->Right = NULL;
@@ -73,11 +73,11 @@ void AddVertex(TNode*& pCurrent, int inf)
     }
     else 
     {
-        if (pCurrent->Inf > inf)
+        if (pCurrent->Inf > inf) //Если значение меньше, идем в левую вершину
             AddVertex(pCurrent->Left, inf);
-        else if (pCurrent->Inf < inf)
+        else if (pCurrent->Inf < inf) //Если значение больше, идем вправую вершину
             AddVertex(pCurrent->Right, inf);
-        else
+        else //Найдена вершина с заданным значением ключа, увеличиваем счетчик
             pCurrent->count++;
     }
 }
@@ -94,8 +94,8 @@ void AddVertexNonRec(TNode*& pRoot, int inf)
     }
     else 
     {
-        TNode* pParent = NULL;
-        TNode* pCurrent = pRoot;
+        TNode* pParent = NULL; //Адрес родителя
+        TNode* pCurrent = pRoot; //Адрес текущей вершины 
         while (pCurrent != NULL) 
         {
             pParent = pCurrent;
@@ -160,7 +160,7 @@ void Changer(TNode*& p, TNode*& pTemp)
 {
     if (p->Right != NULL)
         Changer(p->Right, pTemp);
-    else
+    else // Правое поддерево пустое, заменитель найден, делаем обмен
     {
         pTemp->Inf = p->Inf;
         pTemp = p;
@@ -172,6 +172,7 @@ void DeleteNode(TNode*& pCurrent, int x)
 {
     TNode* pTemp;
 
+    //Поиск удаляемой вершины
     if (pCurrent == NULL)
         cout << "Удаляемой вершины нет. Ничего не делаем" << endl;
     else 
@@ -179,16 +180,16 @@ void DeleteNode(TNode*& pCurrent, int x)
         if (pCurrent->Inf > x)
             DeleteNode(pCurrent->Left, x);
         else if (pCurrent->Inf < x)
-            DeleteNode(pCurrent->Right, x);
-        else 
+            DeleteNode(pCurrent->Right, x); 
+        else  //Удаляемая вершина найдена
         {
             pTemp = pCurrent;
             if (pTemp->Right == NULL)
                 pCurrent = pTemp->Left;
             else if (pTemp->Left == NULL)
                 pCurrent = pTemp->Right;
-            else
-                Changer(pCurrent->Left, pTemp);
+            else //Если потомков два, то вызывается вспомогательная функция Changer
+                Changer(pCurrent->Left, pTemp); //Входи в левое поддерево, и придерживаемся правых потомков(находим ближайшую большую)
 
             delete pTemp;
         }
