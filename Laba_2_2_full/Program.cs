@@ -93,22 +93,28 @@ namespace Laba_2_1_full
             }
         }
 
+        /// <summary>
+        /// Улучшение метода вставок
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="count_comparer"></param>
+        /// <param name="count_move"></param>
         static void ShellSort(int[] array, ref int count_comparer, ref int count_move)
         {
-            int t = Convert.ToInt32(Math.Log2(array.Length));
+            int t = Convert.ToInt32(Math.Log2(array.Length)); //Число шагов группировки
 
             int[] stepsArray = new int[t];
             for (int i = 0; t > 0; i++, t--)
             {
-                stepsArray[i] = Convert.ToInt32(Math.Pow(2, t) - 1);
+                stepsArray[i] = Convert.ToInt32(Math.Pow(2, t) - 1); //Высчитывание последовательности шагов
             }
 
             int k, temp, j;
             t = Convert.ToInt32(Math.Log2(array.Length));
 
-            for (int m = 0; m < t; m++)
+            for (int m = 0; m < t; m++) //Сортировка вставками внутри каждой группы
             {
-                k = stepsArray[m];
+                k = stepsArray[m]; //Выбор величины шага
                 for (int i = k; i < array.Length; i++)
                 {
                     temp = array[i];
@@ -126,20 +132,28 @@ namespace Laba_2_1_full
             }
         }
 
+        /// <summary>
+        /// Улучшение метода обмена
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <param name="count_comparer"></param>
+        /// <param name="count_move"></param>
         static void QuickSort(int[] arr, int left, int right, ref int count_comparer, ref int count_move)
         {
             int i, j, middle, temp;
-            i = left;
+            i = left; //установка начальных значений границ подмассива
             j = right;
-            middle = arr[(left + right) / 2];
+            middle = arr[(left + right) / 2]; //определение серединного элемента
             do
             {
-                while (arr[i] < middle)
+                while (arr[i] < middle) //поиск слева элемента, большего опорного
                 {
                     i = i + 1;
                     count_comparer++;
                 }
-                if (arr[i] > middle)
+                if (arr[i] > middle) //поиск справа элемента, меньшего опорного
                     count_comparer++;
                 while (arr[j] > middle)
                 {
@@ -148,9 +162,9 @@ namespace Laba_2_1_full
                 }
                 if (arr[j] < middle)
                     count_comparer++;
-                if (i <= j)
+                if (i <= j) 
                 {
-                    temp = arr[i];
+                    temp = arr[i]; //обмениваем элементы и изменяем индексы
                     arr[i] = arr[j];
                     arr[j] = temp;
                     count_move++;
@@ -158,9 +172,9 @@ namespace Laba_2_1_full
                     j = j - 1;
                 }
             } while (i <= j);
-            if (left < j)
+            if (left < j) //обработка левой половины
                 QuickSort(arr, left, j, ref count_comparer, ref count_move);
-            if (i < right)
+            if (i < right) //обработка правой половины
                 QuickSort(arr, i, right, ref count_comparer, ref count_move);
         }
 
@@ -190,16 +204,23 @@ namespace Laba_2_1_full
             arr[i] = x;
         }
 
+        /// <summary>
+        /// Улучшение сортировки выбором
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="size"></param>
+        /// <param name="count_comparer"></param>
+        /// <param name="count_move"></param>
         static void PyramidSort(int[] arr, int size, ref int count_comparer, ref int count_move)
         {
             int temp;
-            int left = Convert.ToInt32(size / 2) + 1, right = size - 1;
-            while (left > 0)
+            int left = Convert.ToInt32(size / 2) + 1, right = size - 1; //определение границ правой половины массива
+            while (left > 0) //Цикл построения пирамиды
             {
                 left = left - 1;
                 Sito(arr, left, right, ref count_comparer, ref count_move);
             }
-            while (right > 0)
+            while (right > 0) //Цикл сортировки
             {
                 temp = arr[0];
                 arr[0] = arr[right];
