@@ -42,7 +42,7 @@ namespace HashTableExternal
                 index += char.ConvertToUtf32(key, i);
             }
 
-            return index % 10;
+            return index % SIZE_HASH_TABLE;
         }
 
         private static void PrintHashTable(ArrayCell[] _hashTable)
