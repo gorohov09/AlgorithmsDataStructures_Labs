@@ -70,6 +70,7 @@ namespace HashTableExternal
         {
             int index = Hashing(key);
 
+            comparer++;
             if (_hashTable[index] == null)
             {
                 ArrayCell cell = new ArrayCell();
@@ -80,6 +81,7 @@ namespace HashTableExternal
             }
             else
             {
+                comparer++;
                 if (_hashTable[index].Key == key)
                     return;
                 else
@@ -87,6 +89,7 @@ namespace HashTableExternal
                     Node node = new Node();
                     node.Key = key;
                     node.Next = null;
+                    comparer++;
                     if (_hashTable[index].Begin == null)
                     {
                         _hashTable[index].Begin = node;
@@ -111,6 +114,7 @@ namespace HashTableExternal
             }
             else
             {
+                comparer++;
                 if (_hashTable[index].Key == key)
                     return index;
                 else
@@ -118,6 +122,7 @@ namespace HashTableExternal
                     Node current = _hashTable[index].Begin;
                     while (current != null)
                     {
+                        comparer++;
                         if (current.Key == key)
                             return index;
                         current = current.Next;
@@ -137,6 +142,7 @@ namespace HashTableExternal
             }
             else
             {
+                comparer++;
                 if (_hashTable[index].Key == key)
                 {
                     if (_hashTable[index].Begin is null)
@@ -161,6 +167,7 @@ namespace HashTableExternal
                     Node current = _hashTable[index].Begin;
                     while (current != null)
                     {
+                        comparer++;
                         if (current.Key == key)
                         {
                             if (current == _hashTable[index].Begin)
@@ -281,7 +288,7 @@ namespace HashTableExternal
                     Console.Write("Введите ключ: ");
                     string key = Console.ReadLine();
                     DeleteKey(_hashTable, key, ref comparer);
-
+                    Console.WriteLine($"Кол-во сравнений: {comparer}");
                 }
                 else if (choice == 0)
                     break;
