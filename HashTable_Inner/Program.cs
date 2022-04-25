@@ -8,7 +8,7 @@ namespace HashTable_Inner
 
         private static int count = 0;
 
-        private static string[] _keys = { "АВЕРИНА", "СЕЛЕДКИНА", "ФЕДОРОВА", "АНДРЕЙ", "АЛЕКСЕЙ", "МАКСИМ", "JVRF" };
+        private static string[] _keys = { "ДАНИЛ", "ИГОРЬ", "АНДРЕЙ", "АЛЕКСЕЙ", "МАКСИМ"};
 
         private static string[]  _hashTable = new string[SIZE_HASH_TABLE];
 
@@ -24,7 +24,7 @@ namespace HashTable_Inner
                 index += char.ConvertToUtf32(key, i);
             }
 
-            return index % 10;
+            return index % SIZE_HASH_TABLE;
         }
 
         private static void AddKey(string[] _hashTable, string key, ref int comparer)
@@ -130,7 +130,20 @@ namespace HashTable_Inner
                         Console.Write("Введите ключ: ");
                         string key = Console.ReadLine();
                         if (key != null)
-                            AddKey(_hashTable, key, ref comparer);
+                        {
+                            int comp = 0;
+                            int index = SearchKey(_hashTable, key, ref comp);
+                            if (index == -1)
+                            {
+                                AddKey(_hashTable, key, ref comparer);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Такой ключ уже есть");
+                                continue;
+                            }
+                        }
+                            
                         Console.WriteLine($"Ключ добавлен. Кол-во сравнений: {comparer}");
                     }
                     

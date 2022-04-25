@@ -26,7 +26,7 @@ namespace HashTableExternal
 
         private static int count = 0;
 
-        private static string[] _keys = { "АВЕРИНА", "СЕЛЕДКИНА", "ФЕДОРОВА", "АНДРЕЙ", "АЛЕКСЕЙ", "МАКСИМ", "JVRF", "SSDSD", "EWFFW","FEEFEFFEFE", "ASWQ" };
+        private static string[] _keys = { "ДАНИЛ", "ИГОРЬ", "АНДРЕЙ", "АЛЕКСЕЙ", "МАКСИМ" };
 
         private static ArrayCell[] _hashTable = new ArrayCell[SIZE_HASH_TABLE];
 
@@ -98,6 +98,7 @@ namespace HashTableExternal
                     else
                     {
                         _hashTable[index].End.Next = node;
+                        _hashTable[index].End = node;
                     }
                     _hashTable[index].Count++;
                 }
@@ -258,7 +259,19 @@ namespace HashTableExternal
                         Console.Write("Введите ключ: ");
                         string key = Console.ReadLine();
                         if (key != null)
-                            AddKey(_hashTable, key, ref comparer);
+                        {
+                            int comp = 0;
+                            int index = SearchKey(_hashTable, key, ref comp);
+                            if (index == -1)
+                            {
+                                AddKey(_hashTable, key, ref comparer);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Такой ключ уже есть");
+                                continue;
+                            }
+                        }
                         Console.WriteLine($"Ключ добавлен. Кол-во сравнений: {comparer}");
                     }
 

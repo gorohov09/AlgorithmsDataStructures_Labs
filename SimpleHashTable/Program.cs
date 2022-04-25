@@ -48,7 +48,7 @@ namespace SimpleHashTable
                 {
                     for (int i = 0; i < _hashTable.Length; i++)
                     {
-                        Console.WriteLine($"Индекс массива:{i} - Ключ: {Hashing(_hashTable[i])} - Значение: {_hashTable[i]}");
+                        Console.WriteLine($"Индекс массива:{i} - Ключ: {_hashTable[i]} - Значение: {_hashTable[i]}");
                     }
                 }
                 else if (choice == 4)
